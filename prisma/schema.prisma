@@ -1,0 +1,57 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category{
+  id_cat Int @id @default(autoincrement())
+  name_cat String @db.VarChar(25)
+  products Product[]
+}
+
+model Product{
+  id_product Int @id @default(autoincrement())
+  name_prod String @db.VarChar(30)
+  sold_unit Int @default(0)
+  in_stock Int
+  expire_date DateTime
+  category Category @relation(fields: [id_cat], references: [id_cat])
+  id_cat Int
+}
+
+model User{
+  id_user Int @id @default(autoincrement())
+  user_name String @db.VarChar(20) @unique
+  email String @db.VarBit(50) @unique
+  phone_number String @db.VarChar(20) @unique
+  password String @db.VarChar(25)
+  avatar String @default("src/uploads/images/unnamed.png") @db.VarChar(50)
+}
+
+model State{
+  id_state Int @id @default(autoincrement())
+  state String @db.VarChar(25)
+  orders Order[]
+}
+
+model Order{
+  id_order Int @id @default(autoincrement())
+  ubication String @db.VarChar(50)
+  name_op String @db.VarChar(50)
+  distance Float @default(0)
+  begin_date DateTime
+  arrive_date DateTime
+  state State @relation(fields: [id_state], references: [id_state])
+  id_state Int
+}
+

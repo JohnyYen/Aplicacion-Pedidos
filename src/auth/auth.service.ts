@@ -12,12 +12,13 @@ export class AuthService {
 
     async register(user : RegisterUser){
         const {email, password} = user;
-        const userFind = await this.prisma.user.findFirst({where:{email}})
-        if(userFind)
-            throw new HttpException('EMAIL_EXIST', 401);
+        // const userFind = await this.prisma.user.findFirst({where:{email}})
+        // if(userFind)
+        //     throw new HttpException('EMAIL_EXIST', 401);
 
         const toHast = await hash(password, 10);
-        user = {...user, password:toHast};
+        user = {...user, password:toHast.toString()};
+        
         return await this.prisma.user.create({data:user});
     }
 

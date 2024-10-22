@@ -4,7 +4,7 @@ import {Strategy, ExtractJwt} from 'passport-jwt'
 export class jwtStrategy extends PassportStrategy(Strategy){
     constructor(){
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken,
+            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
             secretOrKey: 'thisSecretOfTest',
             algorithm: ['RS256']
@@ -12,6 +12,7 @@ export class jwtStrategy extends PassportStrategy(Strategy){
     }
 
     async validate(payload : any){
+        console.log(payload);
         return {id:payload.id, name:payload.name}
     }
 }

@@ -15,13 +15,13 @@ datasource db {
 
 model Category{
   id_cat Int @id @default(autoincrement())
-  name_cat String @db.VarChar(25)
+  name_cat String @unique @db.VarChar(25)
   products Product[]
 }
 
 model Product{
   id_product Int @id @default(autoincrement())
-  name_prod String @db.VarChar(30)
+  name_prod String @db.VarChar(30) @unique
   sold_unit Int @default(0)
   in_stock Int
   expire_date DateTime
@@ -40,7 +40,7 @@ model User{
 
 model State{
   id_state Int @id @default(autoincrement())
-  state String @db.VarChar(25)
+  state String @db.VarChar(25) @unique
   orders Order[]
 }
 

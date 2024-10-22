@@ -35,7 +35,11 @@ export class OrderService {
     }
 
     async createState(state: string){
-        return await this.prisma.state.create({data:{state}});
+        try {
+            return await this.prisma.state.create({data:{state}});
+        } catch (error) {
+            throw new ErrorHandler(error).throw();
+        }
     }
 
     async updateOrder(order : PartialOrder, id : number){

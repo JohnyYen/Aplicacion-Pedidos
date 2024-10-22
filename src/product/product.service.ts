@@ -33,7 +33,11 @@ export class ProductService {
     }
 
     async createCategory(category: string){
-        return await this.prisma.category.create({data:{name_cat:category}})
+       try {
+            return await this.prisma.category.create({data:{name_cat:category}})
+       } catch (error) {
+            throw new ErrorHandler(error).throw();
+       }
     }
 
     async updateProduct(product : PartialProduct, id:number){

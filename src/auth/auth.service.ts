@@ -4,6 +4,7 @@ import { RegisterUser } from './dto/register.dto';
 import { LoginUser } from './dto/login.dto';
 import {hash, compare} from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { ErrorHandler } from 'src/libs/errorHandler';
 
 
 @Injectable()
@@ -19,7 +20,11 @@ export class AuthService {
         const toHast = await hash(password, 10);
         user = {...user, password:toHast.toString()};
         
-        return await this.prisma.user.create({data:user});
+        try {
+            return await this.prisma.user.create({data:user});
+        } catch (error) {
+            throw new ErrorHandler(error).throw();
+        }
     }
 
     async login(user : LoginUser){
